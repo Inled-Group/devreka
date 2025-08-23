@@ -1,0 +1,60 @@
+/* Floating Card */
+.floating-card {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--container-bg);
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.floating-card-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.floating-card-text {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .floating-card {
+        bottom: 15px;
+        right: 15px;
+        padding: 8px 12px;
+    }
+
+    .floating-card-icon {
+        width: 25px;
+        height: 25px;
+    }
+
+    .floating-card-text {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .floating-card {
+        bottom: 10px;
+        right: 10px;
+        padding: 6px 10px;
+    }
+
+    .floating-card-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .floating-card-text {
+        font-size: 0.7rem;
+    }
+}

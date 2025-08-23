@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title id="pageTitle">Devreka! Ideas para programadores</title>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <meta charset="utf-8"/>
+  <meta name="author" content="Inled Group"/>
+  <meta name="description" content="¿No te surgen ideas de negocio? ¿eres programador? ¡Esta es tu herramienta! Ideas de negocio programables aportadas por la IA de Inled."/>
+    <link rel="stylesheet" href="/src/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="/src/aipowered.css" />
+
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <a href="/index.html" class="logo">Devreka</a>
+            <nav>
+                <a href="/index.html#features">Características</a>
+                <a href="/index.html#how-it-works">Cómo Funciona</a>
+            </nav>
+        </div>
+    </header>
+
+    <div id="app">
+        <main class="generator-container">
+            <h1 class="title">Devreka</h1>
+            <p class="subtitle">La magia de la productividad en ideas.</p>
+
+            <div class="options">
+                <label class="radio-card">
+                    <input type="radio" name="idea-type" value="frontend" checked>
+                    <span class="radio-checkmark"></span>
+                    <span class="radio-label">Frontend</span>
+                </label>
+                <label class="radio-card">
+                    <input type="radio" name="idea-type" value="backend">
+                    <span class="radio-checkmark"></span>
+                    <span class="radio-label">Backend</span>
+                </label>
+                <label class="radio-card">
+                    <input type="radio" name="idea-type" value="fullstack">
+                    <span class="radio-checkmark"></span>
+                    <span class="radio-label">Fullstack</span>
+                </label>
+            </div>
+
+
+
+            <div class="options">
+                <label class="radio-card">
+                    <input type="radio" name="difficulty" value="facil" checked>
+                    <span class="radio-checkmark"></span>
+                    <span class="radio-label">Fácil</span>
+                </label>
+                <label class="radio-card">
+                    <input type="radio" name="difficulty" value="media">
+                    <span class="radio-checkmark"></span>
+                    <span class="radio-label">Media</span>
+                </label>
+                <label class="radio-card">
+                    <input type="radio" name="difficulty" value="dificil">
+                    <span class="radio-checkmark"></span>
+                    <span class="radio-label">Difícil</span>
+                </label>
+            </div>
+
+
+            <div class="options">
+                <label class="radio-card">
+                    <input type="radio" name="response-speed" value="quick" checked>
+                    <span class="radio-checkmark"></span>
+                    <span class="radio-label">Respuesta Rápida</span>
+                </label>
+                <label class="radio-card">
+                    <input type="radio" name="response-speed" value="detailed">
+                    <span class="radio-checkmark"></span>
+                    <span class="radio-label">Respuesta Detallada</span>
+                </label>
+            </div>
+
+            <button id="generate-btn" class="cta-button">Generar Idea</button>
+
+            <div id="loader" class="hidden">
+                <div class="spinner"></div>
+                <p id="progress-report"></p>
+                <p id="motivational-text"></p>
+            </div>
+
+            <div id="result-container" class="result-container hidden">
+                <h2>Tu Próxima Gran Idea:</h2>
+                <div id="result-text"></div>
+            </div>
+
+            <div id="chat-container" class="chat-container hidden">
+                <div id="chat-history"></div>
+                <div id="typing-indicator" class="hidden"><span>.</span><span>.</span><span>.</span></div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Profundiza sobre la idea...">
+                    <button id="send-chat-btn" class="cta-button">Enviar</button>
+                </div>
+            </div>
+
+            <button id="export-pdf-btn" class="cta-button hidden">Exportar a PDF</button>
+            <div style="height: 5vh;"></div>
+            <button id="export-md-btn" class="cta-button hidden">Exportar a Markdown</button>
+            <div style="height: 5vh;"></div>
+            <button id="export-claude-btn" class="cta-button hidden">Crear prompt para Claude</button>
+            <div id="claude-prompt-container" class="result-container hidden" style="margin-top: 20px;">
+                <h2>Prompt para Claude</h2>
+                                <pre id="claude-prompt-text"></pre>
+                <button id="copy-claude-prompt-btn" class="cta-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 8px;">
+                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                    </svg>
+                    Copiar Prompt
+                </button>
+            </div>
+
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+           <p>Desarrollado por Inled Group bajo licencia GNU GPLv3.0.</p>
+        </div>
+    </footer>
+    <div class="floating-card">
+        <img src="https://new.inled.es/upload/inledai.svg" alt="Inled AI Icon" class="floating-card-icon">
+        <a href="https://ai.inled.es" class="floating-card-text" style="text-decoration: none;">Funciona gracias a Inled AI</>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/header-animation.js"></script>
+</body>
+</html>
