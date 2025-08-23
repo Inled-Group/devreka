@@ -9,7 +9,8 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^7.1.2"
+    "vite": "^7.1.2",
+    "wrangler": "^4.32.0"
   },
   "dependencies": {
     "@mlc-ai/web-llm": "^0.2.45",

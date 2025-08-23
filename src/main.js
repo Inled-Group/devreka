@@ -348,22 +348,22 @@ async function handleExportClaude() {
     const ideaContent = conversationHistory[1].content;
 
     const promptGeneratorPrompt = `
-Actúa como un experto en "prompt engineering" para modelos de IA generativa como Claude.
-Tu tarea es crear un prompt para Claude que le pida que desarrolle la siguiente idea de proyecto.
-El prompt que generes para Claude debe ser claro, conciso, y seguir las mejores prácticas para obtener resultados de alta calidad.
+Actúa como un experto en "prompt engineering" para modelos de IA generativa.
+Tu tarea es crear un prompt para una IA de programación que le pida que desarrolle la siguiente idea de proyecto.
+El prompt que generes para la IA debe ser claro, conciso, y seguir las mejores prácticas para obtener resultados de alta calidad.
 
 **Idea de Proyecto Original:**
 ${ideaContent}
 
-**Instrucciones para el prompt de Claude que vas a generar:**
+**Instrucciones para el prompt de la IA que vas a generar:**
 1. El prompt debe empezar con un saludo amigable y una introducción clara de la tarea.
 2. Debe incluir la descripción de la idea, las tecnologías recomendadas y las tareas iniciales, extraídas de la idea original.
-3. Debe pedirle a Claude que actúe como un desarrollador de software senior y un mentor.
-4. Debe solicitar a Claude que genere una estructura de archivos y el código inicial para el proyecto.
-5. Debe instruir a Claude para que explique cada paso del proceso.
+3. Debe pedirle a la IA que actúe como un desarrollador de software senior y un mentor.
+4. Debe solicitar a la IA que genere una estructura de archivos y el código inicial para el proyecto.
+5. Debe instruir a la IA para que explique cada paso del proceso.
 6. El prompt debe estar en español.
 
-Genera únicamente el prompt para Claude, sin ningún texto adicional antes o después.
+Genera únicamente el prompt para la IA, sin ningún texto adicional antes o después.
 `;
 
     const reply = await activeEngine.chat.completions.create({
@@ -379,8 +379,8 @@ Genera únicamente el prompt para Claude, sin ningún texto adicional antes o de
     }
 
   } catch (error) {
-    console.error("Error al generar el prompt para Claude:", error);
-    claudePromptText.textContent = "Hubo un error al generar el prompt para Claude. Revisa la consola.";
+    console.error("Error al generar el prompt para la IA:", error);
+    claudePromptText.textContent = "Hubo un error al generar el prompt para la IA. Revisa la consola.";
   } finally {
     exportClaudeBtn.disabled = false;
     exportClaudeBtn.textContent = originalButtonText;
