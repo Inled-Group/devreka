@@ -280,54 +280,80 @@ function handleExportMarkdown() {
   URL.revokeObjectURL(url);
 }
 
-function handleExportPDF() {
-  const doc = new jsPDF();
-  let y = 15;
-  const pageHeight = doc.internal.pageSize.height;
-  const margin = 10;
-  const fontSize = 10;
-  const lineHeight = fontSize * 1.2;
-  const paddingBetweenMessages = 5;
+async function handleExportPDF() {
+    const doc = new jsPDF({
+        orientation: 'p',
+        unit: 'pt',
+        format: 'a4'
+    });
 
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(14);
-  doc.text("Conversación sobre Idea de Proyecto", margin, y);
-  y += 15;
+    const margin = 40;
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let y = margin;
 
-  doc.setFontSize(fontSize);
-
-  conversationHistory.forEach((msg, index) => {
-    if (index === 0 && msg.role === 'user' && msg.content.startsWith('Actúa como un experto estratega')) return;
-
-    doc.setFont('helvetica', msg.role === 'user' ? 'bold' : 'normal');
-    // jsPDF espera un número hexadecimal o array RGB (0-255)
-    if (msg.role === 'user') {
-      doc.setTextColor(37, 117, 252); // Azul RGB
-    } else {
-      doc.setTextColor(0, 0, 0); // Negro RGB
-    }
-
-    const prefix = msg.role === 'user' ? 'Tú: ' : 'IA: ';
-    const content = String(msg.content || ''); // Ensure content is a string
-    const textLines = doc.splitTextToSize(prefix + content, doc.internal.pageSize.width - 2 * margin);
-
-    console.log('Debug - textLines:', textLines, 'Type:', typeof textLines, 'Is Array:', Array.isArray(textLines));
-    console.log('Debug - margin:', margin, 'Type:', typeof margin);
-    console.log('Debug - y:', y, 'Type:', typeof y);
-
-    if (textLines && textLines.length > 0) {
-        const requiredHeight = (textLines.length * lineHeight) + paddingBetweenMessages;
-        if (y + requiredHeight > pageHeight - margin) {
+    const checkPageBreak = (neededHeight) => {
+        if (y + neededHeight > pageHeight - margin) {
             doc.addPage();
             y = margin;
-            doc.setFontSize(fontSize);
         }
-        doc.text(textLines, margin, y);
-        y += requiredHeight;
-    }
-  });
+    };
 
-  doc.save("idea-conversacion.pdf");
+    const renderText = (text, options) => {
+        const { x, style, size, isListItem } = options;
+        doc.setFont('helvetica', style || 'normal');
+        doc.setFontSize(size || 10);
+        const textLines = doc.splitTextToSize(text, pageWidth - x - margin);
+        checkPageBreak(textLines.length * (size || 10) * 1.2);
+        if (isListItem) {
+            doc.text('•', x - 15, y);
+        }
+        doc.text(textLines, x, y);
+        y += textLines.length * (size || 10) * 1.2;
+    };
+
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    checkPageBreak(20);
+    doc.text('Conversación sobre Idea de Proyecto', pageWidth / 2, y, { align: 'center' });
+    y += 30;
+
+    for (const msg of conversationHistory) {
+        if (msg.role === 'user' && msg.content.startsWith('Actúa como un experto estratega')) {
+            continue;
+        }
+
+        checkPageBreak(20);
+        const sender = msg.role === 'user' ? 'Tú:' : 'IA:';
+        const color = msg.role === 'user' ? '#007bff' : '#212529';
+        doc.setTextColor(color);
+        renderText(sender, { x: margin, style: 'bold', size: 12 });
+        doc.setTextColor(0, 0, 0);
+
+        const tokens = marked.lexer(msg.content);
+
+        for (const token of tokens) {
+            switch (token.type) {
+                case 'heading':
+                    renderText(token.text, { x: margin, style: 'bold', size: 16 - token.depth * 2 });
+                    break;
+                case 'paragraph':
+                    renderText(token.text, { x: margin });
+                    break;
+                case 'list':
+                    token.items.forEach(item => {
+                        renderText(item.text, { x: margin + 15, isListItem: true });
+                    });
+                    break;
+                case 'space':
+                    y += 10;
+                    break;
+            }
+        }
+        y += 15; // Space between messages
+    }
+
+    doc.save('idea-conversacion.pdf');
 }
 
 async function handleExportClaude() {
